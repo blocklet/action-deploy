@@ -2986,6 +2986,12 @@ async function sendSlackMessage(webhook, msg) {
   }
 }
 
+const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
+if (!fs.existsSync(file)) {
+  throw new Error('Missing file at .blocklet/release/blocklet.json');
+}
+const { version, name } = __nccwpck_require__(987);
+
 (async () => {
   try {
     await exec.exec('pwd');
@@ -2995,14 +3001,6 @@ async function sendSlackMessage(webhook, msg) {
     const accessKey = core.getInput('access-key');
     const accessSecret = core.getInput('access-secret');
     const slackWebhook = core.getInput('slack-webhook');
-
-    const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
-    if (!fs.existsSync(file)) {
-      throw new Error('Missing file at .blocklet/release/blocklet.json');
-    }
-
-    const version = __nccwpck_require__(987).version;
-    const name = __nccwpck_require__(987).name;
 
     await exec.exec(
       `blocklet deploy .blocklet/bundle --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
