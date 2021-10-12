@@ -9,6 +9,12 @@ async function sendSlackMessage(webhook, msg) {
   }
 }
 
+const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
+if (!fs.existsSync(file)) {
+  throw new Error('Missing file at .blocklet/release/blocklet.json');
+}
+const { version, name } = require(file);
+
 (async () => {
   try {
     await exec.exec('pwd');
@@ -18,14 +24,6 @@ async function sendSlackMessage(webhook, msg) {
     const accessKey = core.getInput('access-key');
     const accessSecret = core.getInput('access-secret');
     const slackWebhook = core.getInput('slack-webhook');
-
-    const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
-    if (!fs.existsSync(file)) {
-      throw new Error('Missing file at .blocklet/release/blocklet.json');
-    }
-
-    const version = require(file).version;
-    const name = require(file).name;
 
     await exec.exec(
       `blocklet deploy .blocklet/bundle --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
