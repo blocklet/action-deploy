@@ -1,6 +1,6 @@
 {
   "name": "action-deploy",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Github action for deploy blocklet to abtnode",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   "homepage": "https://github.com/blocklet/action-deploy#readme",
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "@actions/exec": "^1.1.0",
+    "axios": "^0.22.0",
     "shelljs": "^0.8.4"
   }
 }

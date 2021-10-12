@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-const exec = require('@actions/exec');
 const core = require('@actions/core');
 const shell = require('shelljs');
+const axios = require('axios').default;
 
-async function sendSlackMessage(webhook, msg) {
+async function sendSlackMessage(webhook, data) {
   if (webhook) {
-    await exec.exec(`curl -X POST -H 'Content-type: application/json' --data ${msg} ${webhook}`);
+    await axios.post(webhook, data);
   }
 }
 
@@ -26,36 +26,16 @@ async function sendSlackMessage(webhook, msg) {
 
     const deployRes = shell.exec(
       `blocklet deploy .blocklet/bundle --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
-      // [],
-      // {
-      //   listeners: {
-      //     async stderr(err) {
-      //       await sendSlackMessage(
-      //         slackWebhook,
-      //         JSON.stringify({
-      //           text: `:x: Faild to deploy ${name} v${version} to ${endpoint}`,
-      //         }),
-      //       );
-      //       throw new Error(err.toString());
-      //     },
-      //   },
-      // },
     );
     if (deployRes.code !== 0) {
-      await sendSlackMessage(
-        slackWebhook,
-        JSON.stringify({
-          text: `:x: Faild to deploy ${name} v${version} to ${endpoint}`,
-        }),
-      );
+      await sendSlackMessage(slackWebhook, {
+        text: `:x: Faild to deploy ${name} v${version} to ${endpoint}`,
+      });
       throw new Error(deployRes.stderr);
     }
-    sendSlackMessage(
-      slackWebhook,
-      JSON.stringify({
-        text: `${name} v${version} was successfully deployed to ${endpoint}`,
-      }),
-    );
+    await sendSlackMessage(slackWebhook, {
+      text: `${name} v${version} was successfully deployed to ${endpoint}`,
+    });
 
     console.log(`Deploy blocklet ${name} to ${endpoint} success!`);
   } catch (error) {
