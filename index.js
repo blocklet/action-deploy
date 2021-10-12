@@ -12,7 +12,7 @@ async function sendSlackMessage(webhook, msg) {
 (async () => {
   try {
     await exec.exec('pwd');
-    await exec.exec('ls');
+    await exec.exec('ls -a');
     console.log('Deploy to abtnode using github action');
     const endpoint = core.getInput('endpoint');
     const accessKey = core.getInput('access-key');
@@ -29,6 +29,7 @@ async function sendSlackMessage(webhook, msg) {
 
     await exec.exec(
       `blocklet deploy .blocklet/bundle --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
+      [],
       {
         listeners: {
           stderr(err) {

@@ -1,6 +1,6 @@
 {
   "name": "action-deploy",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Github action for deploy blocklet to abtnode",
   "main": "index.js",
   "scripts": {
