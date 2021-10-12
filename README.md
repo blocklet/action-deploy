@@ -1,2 +1,3 @@
 # action-deploy
-Github action for send slack notify after blocklet release new version
+
+Github action for deploy blocklet to abtnode

@@ -1,0 +1,18 @@
+name: 'Deploy blocklet'
+description: 'Deploy blocklet to abtnode'
+inputs:
+  endpoint:
+    description: 'Endpoint of abtnode'
+    required: true
+  access-key:
+    description: 'Access key of abtnode'
+    required: false
+  secret-key:
+    description: 'Secret key of abtnode'
+    required: false
+  slack-webhook:
+    description: 'Webhook of slack'
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

@@ -1,0 +1,25 @@
+{
+  "name": "action-deploy",
+  "version": "0.1.0",
+  "description": "Github action for deploy blocklet to abtnode",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build index.js --license licenses.txt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blocklet/action-deploy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blocklet/action-deploy/issues"
+  },
+  "homepage": "https://github.com/blocklet/action-deploy#readme",
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "shelljs": "^0.8.4"
+  }
+}
