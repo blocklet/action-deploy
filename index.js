@@ -9,17 +9,18 @@ async function sendSlackMessage(webhook, msg) {
   }
 }
 
-const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
-if (!fs.existsSync(file)) {
-  throw new Error('Missing file at .blocklet/release/blocklet.json');
-}
-const { version, name } = require(file);
-
 (async () => {
   try {
     await exec.exec('pwd');
-    await exec.exec('ls -a');
+    await exec.exec('ls .blocklet -a');
+    await exec.exec('ls .blocklet/release -a');
     console.log('Deploy to abtnode using github action');
+    const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
+    if (!fs.existsSync(file)) {
+      throw new Error('Missing file at .blocklet/release/blocklet.json');
+    }
+    const { version, name } = require(file);
+
     const endpoint = core.getInput('endpoint');
     const accessKey = core.getInput('access-key');
     const accessSecret = core.getInput('access-secret');
