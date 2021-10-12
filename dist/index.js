@@ -2822,14 +2822,6 @@ exports.debug = debug; // for test
 
 /***/ }),
 
-/***/ 987:
-/***/ ((module) => {
-
-module.exports = eval("require")("/home/runner/work/action-deploy/action-deploy/.blocklet/release/blocklet.json");
-
-
-/***/ }),
-
 /***/ 357:
 /***/ ((module) => {
 
@@ -2988,15 +2980,12 @@ async function sendSlackMessage(webhook, msg) {
 
 (async () => {
   try {
-    await exec.exec('pwd');
-    await exec.exec('ls .blocklet -a');
-    await exec.exec('ls .blocklet/release -a');
     console.log('Deploy to abtnode using github action');
     const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
     if (!fs.existsSync(file)) {
       throw new Error('Missing file at .blocklet/release/blocklet.json');
     }
-    const { version, name } = __nccwpck_require__(987);
+    const { version, name } = JSON.parse(fs.readFileSync(file, 'utf-8'));
 
     const endpoint = core.getInput('endpoint');
     const accessKey = core.getInput('access-key');
