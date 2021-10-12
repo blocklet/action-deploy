@@ -1,15 +1,17 @@
 const fs = require('fs');
 const path = require('path');
-const shell = require('shelljs');
+const exec = require('@actions/exec');
 const core = require('@actions/core');
 
-function sendSlackMessage(webhook, msg) {
+async function sendSlackMessage(webhook, msg) {
   if (webhook) {
-    shell.exec(`curl -X POST -H 'Content-type: application/json' --data ${msg} ${webhook}`);
+    await exec.exec(`curl -X POST -H 'Content-type: application/json' --data ${msg} ${webhook}`);
   }
 }
 
 try {
+  await exec.exec('pwd');
+  await exec.exec('ls');
   console.log('Deploy to abtnode using github action');
   const endpoint = core.getInput('endpoint');
   const accessKey = core.getInput('access-key');
@@ -24,18 +26,22 @@ try {
   const version = require(file).version;
   const name = require(file).name;
 
-  const deployRes = shell.exec(
+  await exec.exec(
     `blocklet deploy .blocklet/bundle --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
+    {
+      listeners: {
+        stderr(err) {
+          sendSlackMessage(
+            slackWebhook,
+            JSON.stringify({
+              text: `:x: Faild to deploy ${name} v${version} to ${endpoint}`,
+            }),
+          );
+          throw new Error(err.toString());
+        },
+      },
+    },
   );
-  if (deployRes.code !== 0) {
-    sendSlackMessage(
-      slackWebhook,
-      JSON.stringify({
-        text: `:x: Faild to deploy ${name} v${version} to ${endpoint}`,
-      }),
-    );
-    throw new Error(deployRes.stderr);
-  }
   sendSlackMessage(
     slackWebhook,
     JSON.stringify({
