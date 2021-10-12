@@ -12,7 +12,7 @@ try {
   console.log('Deploy to abtnode using github action');
   const endpoint = core.getInput('endpoint');
   const accessKey = core.getInput('access-key');
-  const secretKey = core.getInput('secret-key');
+  const accessSecret = core.getInput('access-secret');
   const slackWebhook = core.getInput('slack-webhook');
 
   const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
@@ -24,7 +24,7 @@ try {
   const name = require(file).name;
 
   const deployRes = shell.exec(
-    `blocklet deploy .blocklet/bundle --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${secretKey} --skip-hooks`,
+    `blocklet deploy .blocklet/bundle --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
   );
   if (deployRes.code !== 0) {
     sendSlackMessage(

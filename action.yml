@@ -6,10 +6,10 @@ inputs:
     required: true
   access-key:
     description: 'Access key of abtnode'
-    required: false
-  secret-key:
-    description: 'Secret key of abtnode'
-    required: false
+    required: true
+  access-secret:
+    description: 'Access secret of abtnode'
+    required: true
   slack-webhook:
     description: 'Webhook of slack'
     required: false
