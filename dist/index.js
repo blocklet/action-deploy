@@ -8786,6 +8786,14 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 6987:
+/***/ ((module) => {
+
+module.exports = eval("require")("/home/runner/work/action-deploy/action-deploy/.blocklet/release/blocklet.json");
+
+
+/***/ }),
+
 /***/ 2357:
 /***/ ((module) => {
 
@@ -8928,6 +8936,7 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 const fs = __nccwpck_require__(5747);
+const path = __nccwpck_require__(5622);
 const shell = __nccwpck_require__(6288);
 const core = __nccwpck_require__(9699);
 
@@ -8949,8 +8958,8 @@ try {
     throw new Error('Missing file at .blocklet/release/blocklet.json');
   }
 
-  const version = require(file).version;
-  const name = require(file).name;
+  const version = __nccwpck_require__(6987).version;
+  const name = __nccwpck_require__(6987).name;
 
   const deployRes = shell.exec(
     `blocklet deploy .blocklet/bundle --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
