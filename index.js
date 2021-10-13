@@ -5,7 +5,7 @@ const shell = require('shelljs');
 const axios = require('axios').default;
 
 const skip = core.getInput('skip');
-if (skip) {
+if (skip === 'true') {
   console.log('Skip deploy to abtnode action');
   return;
 }
