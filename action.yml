@@ -13,6 +13,9 @@ inputs:
   slack-webhook:
     description: 'Webhook of slack'
     required: false
+  skip:
+    description: 'Skip action'
+    default: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
