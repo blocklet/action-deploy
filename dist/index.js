@@ -11961,6 +11961,12 @@ const core = __nccwpck_require__(9699);
 const shell = __nccwpck_require__(6288);
 const axios = __nccwpck_require__(8304).default;
 
+const skip = core.getInput('skip');
+if (skip) {
+  console.log('Skip deploy to abtnode action');
+  return;
+}
+
 async function sendSlackMessage(webhook, data) {
   if (webhook) {
     await axios.post(webhook, data);
@@ -11976,9 +11982,9 @@ async function sendSlackMessage(webhook, data) {
     }
     const { version, name } = JSON.parse(fs.readFileSync(file, 'utf-8'));
 
-    const endpoint = core.getInput('endpoint');
-    const accessKey = core.getInput('access-key');
-    const accessSecret = core.getInput('access-secret');
+    const endpoint = core.getInput('endpoint', { required: true });
+    const accessKey = core.getInput('access-key', { required: true });
+    const accessSecret = core.getInput('access-secret', { required: true });
     const slackWebhook = core.getInput('slack-webhook');
 
     const deployRes = shell.exec(
