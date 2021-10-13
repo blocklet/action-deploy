@@ -11962,7 +11962,7 @@ const shell = __nccwpck_require__(6288);
 const axios = __nccwpck_require__(8304).default;
 
 const skip = core.getInput('skip');
-if (skip) {
+if (skip === 'true') {
   console.log('Skip deploy to abtnode action');
   return;
 }
