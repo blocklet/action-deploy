@@ -1,4 +1,6 @@
 name: Github release
+env:
+  MAIN_VERSION: 1
 
 on:
   push:
