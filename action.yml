@@ -17,7 +17,7 @@ inputs:
     description: '.blocklet/bundle path'
     default: .blocklet/bundle
     required: false
-  workgin-directory:
+  working-directory:
     description: 'Working directory'
     default: ./
     required: false
