@@ -11975,7 +11975,7 @@ async function sendSlackMessage(webhook, data) {
 
 (async () => {
   const folderPath = core.getInput('folder-path');
-  const workingDirectory = core.getInput('workgin-directory');
+  const workingDirectory = core.getInput('working-directory');
   const endpoint = core.getInput('endpoint', { required: true });
   const accessKey = core.getInput('access-key', { required: true });
   const accessSecret = core.getInput('access-secret', { required: true });
