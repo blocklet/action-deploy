@@ -1,6 +1,6 @@
 {
   "name": "action-deploy",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Github action for deploy blocklet to abtnode",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   "dependencies": {
     "@actions/core": "^1.6.0",
     "axios": "^0.22.0",
+    "js-yaml": "^4.1.0",
     "shelljs": "^0.8.4"
   }
 }

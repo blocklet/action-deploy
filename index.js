@@ -3,6 +3,7 @@ const path = require('path');
 const core = require('@actions/core');
 const shell = require('shelljs');
 const axios = require('axios').default;
+const yaml = require('js-yaml');
 
 const skip = core.getInput('skip');
 if (skip === 'true') {
@@ -34,7 +35,7 @@ async function sendSlackMessage(webhook, data) {
     if (!fs.existsSync(file)) {
       throw new Error('Missing folder at .blocklet/bundle');
     }
-    const { version, name } = JSON.parse(fs.readFileSync(file, 'utf-8'));
+    const { version, name } = yaml.load(fs.readFileSync(path.join(file, 'blocklet.yml'), 'utf-8'), { json: true });
 
     const deployRes = shell.exec(
       `blocklet deploy ${file} --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
