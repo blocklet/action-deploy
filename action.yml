@@ -13,6 +13,14 @@ inputs:
   slack-webhook:
     description: 'Webhook of slack'
     required: false
+  folder-path:
+    description: '.blocklet/bundle path'
+    default: .blocklet/bundle
+    required: false
+  workgin-directory:
+    description: 'Working directory'
+    default: ./
+    required: false
   skip:
     description: 'Skip action'
     default: false

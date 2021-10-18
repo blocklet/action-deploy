@@ -17,21 +17,27 @@ async function sendSlackMessage(webhook, data) {
 }
 
 (async () => {
+  const folderPath = core.getInput('folder-path');
+  const workingDirectory = core.getInput('workgin-directory');
+  const endpoint = core.getInput('endpoint', { required: true });
+  const accessKey = core.getInput('access-key', { required: true });
+  const accessSecret = core.getInput('access-secret', { required: true });
+  const slackWebhook = core.getInput('slack-webhook');
+
   try {
+    const cdRes = shell.cd(workingDirectory);
+    if (cdRes.code !== 0) {
+      throw new Error(`Failed to change directory to ${workingDirectory}`);
+    }
     console.log('Deploy to abtnode using github action');
-    const file = path.join(process.cwd(), '.blocklet/release/blocklet.json');
+    const file = path.join(process.cwd(), folderPath);
     if (!fs.existsSync(file)) {
-      throw new Error('Missing file at .blocklet/release/blocklet.json');
+      throw new Error('Missing folder at .blocklet/bundle');
     }
     const { version, name } = JSON.parse(fs.readFileSync(file, 'utf-8'));
 
-    const endpoint = core.getInput('endpoint', { required: true });
-    const accessKey = core.getInput('access-key', { required: true });
-    const accessSecret = core.getInput('access-secret', { required: true });
-    const slackWebhook = core.getInput('slack-webhook');
-
     const deployRes = shell.exec(
-      `blocklet deploy .blocklet/bundle --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
+      `blocklet deploy ${file} --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
     );
     if (deployRes.code !== 0) {
       await sendSlackMessage(slackWebhook, {
