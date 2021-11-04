@@ -17,6 +17,10 @@ async function sendSlackMessage(webhook, data) {
   }
 }
 
+function printAble(data) {
+  return data.split(' ');
+}
+
 (async () => {
   const folderPath = core.getInput('folder-path');
   const workingDirectory = core.getInput('working-directory');
@@ -42,15 +46,16 @@ async function sendSlackMessage(webhook, data) {
     );
     if (deployRes.code !== 0) {
       await sendSlackMessage(slackWebhook, {
-        text: `:x: Faild to deploy ${name} v${version} to ${endpoint}`,
+        text: `:x: Faild to deploy ${name} v${version} to ${printAble(endpoint)}`,
       });
       throw new Error(deployRes.stderr);
     }
-    await sendSlackMessage(slackWebhook, {
-      text: `${name} v${version} was successfully deployed to ${endpoint}`,
-    });
 
-    console.log(`Deploy blocklet ${name} to ${endpoint} success!`);
+    console.log(`Deploy blocklet ${name} to ${printAble(endpoint)} success!`);
+
+    await sendSlackMessage(slackWebhook, {
+      text: `${name} v${version} was successfully deployed to ${printAble(endpoint)}`,
+    });
   } catch (error) {
     core.setFailed(error.message);
   }
