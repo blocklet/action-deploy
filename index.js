@@ -22,14 +22,14 @@ function printAble(data) {
 }
 
 (async () => {
-  const folderPath = core.getInput('folder-path');
-  const workingDirectory = core.getInput('working-directory');
-  const endpoint = core.getInput('endpoint', { required: true });
-  const accessKey = core.getInput('access-key', { required: true });
-  const accessSecret = core.getInput('access-secret', { required: true });
-  const slackWebhook = core.getInput('slack-webhook');
-
   try {
+    const folderPath = core.getInput('folder-path');
+    const workingDirectory = core.getInput('working-directory');
+    const endpoint = core.getInput('endpoint', { required: true });
+    const accessKey = core.getInput('access-key', { required: true });
+    const accessSecret = core.getInput('access-secret', { required: true });
+    const slackWebhook = core.getInput('slack-webhook');
+
     const cdRes = shell.cd(workingDirectory);
     if (cdRes.code !== 0) {
       throw new Error(`Failed to change directory to ${workingDirectory}`);

@@ -14,23 +14,24 @@ jobs:
     if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: latest
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'pnpm'
 
-      - name: Get npm version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@master
-
-      - name: Set yarn cache
-        uses: c-hive/gha-yarn-cache@v2
+      - run: npm add -g @antfu/ni @vercel/ncc
 
       - name: Install dependencies
-        run: |
-          yarn
-          yarn global add @vercel/ncc
+        run: nci
 
       - name: Build
-        run: yarn build
+        run: nr build
 
       - name: Publish dist
         run: |
