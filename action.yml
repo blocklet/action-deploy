@@ -13,6 +13,12 @@ inputs:
   slack-webhook:
     description: 'Webhook of slack'
     required: false
+  app-did:
+    description: 'Deploy as a app child blocklet'
+    required: false
+  mount-point:
+    description: 'If is a child blocklet, need setup a mount point'
+    required: false
   folder-path:
     description: '.blocklet/bundle path'
     default: .blocklet/bundle

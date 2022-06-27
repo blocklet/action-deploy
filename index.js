@@ -29,6 +29,12 @@ function printAble(data) {
     const accessKey = core.getInput('access-key', { required: true });
     const accessSecret = core.getInput('access-secret', { required: true });
     const slackWebhook = core.getInput('slack-webhook');
+    const appDid = core.getInput('app-did');
+    const mountPoint = core.getInput('mount-point');
+
+    if ([appDid, mountPoint].filter(Boolean).length === 1) {
+      throw new Error(`Must provide both "--app-did" and "--mount-point" to deploy as a child blocklet`);
+    }
 
     const cdRes = shell.cd(workingDirectory);
     if (cdRes.code !== 0) {
