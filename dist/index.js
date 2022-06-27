@@ -18444,6 +18444,8 @@ function printAble(data) {
 
 (async () => {
   try {
+    console.log('Deploy to blocklet server using github action');
+
     const folderPath = core.getInput('folder-path');
     const workingDirectory = core.getInput('working-directory');
     const endpoint = core.getInput('endpoint', { required: true });
@@ -18453,24 +18455,27 @@ function printAble(data) {
     const appDid = core.getInput('app-did');
     const mountPoint = core.getInput('mount-point');
 
-    if ([appDid, mountPoint].filter(Boolean).length === 1) {
-      throw new Error(`Must provide both "--app-did" and "--mount-point" to deploy as a child blocklet`);
-    }
+    const childBlockletParams = [appDid, mountPoint].filter(Boolean);
 
     const cdRes = shell.cd(workingDirectory);
     if (cdRes.code !== 0) {
       throw new Error(`Failed to change directory to ${workingDirectory}`);
     }
-    console.log('Deploy to abtnode using github action');
     const file = path.join(process.cwd(), folderPath);
     if (!fs.existsSync(file)) {
       throw new Error('Missing folder at .blocklet/bundle');
     }
     const { version, name } = yaml.load(fs.readFileSync(path.join(file, 'blocklet.yml'), 'utf-8'), { json: true });
 
-    const deployRes = shell.exec(
-      `blocklet deploy ${file} --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`,
-    );
+    let command = `blocklet deploy ${file} --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`;
+
+    if (childBlockletParams.length === 1) {
+      throw new Error(`Must provide both "--app-did" and "--mount-point" to deploy as a child blocklet`);
+    } else if (childBlockletParams.length === 2) {
+      command += ` --app-did=${appDid} --mount-point=${mountPoint}`;
+    }
+
+    const deployRes = shell.exec(command);
     if (deployRes.code !== 0) {
       await sendSlackMessage(slackWebhook, {
         text: `:x: Faild to deploy ${name} v${version} to ${printAble(endpoint)}`,
