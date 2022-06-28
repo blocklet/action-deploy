@@ -18472,7 +18472,7 @@ function printAble(data) {
     if (childBlockletParams.length === 1) {
       throw new Error(`Must provide both "--app-did" and "--mount-point" to deploy as a child blocklet`);
     } else if (childBlockletParams.length === 2) {
-      command += ` --app-did=${appDid} --mount-point=${mountPoint}`;
+      command += ` --root-did=${appDid} --mount-point=${mountPoint}`;
     }
 
     const deployRes = shell.exec(command);
