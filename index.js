@@ -46,7 +46,7 @@ function printAble(data) {
     }
     const { version, name } = yaml.load(fs.readFileSync(path.join(file, 'blocklet.yml'), 'utf-8'), { json: true });
 
-    let command = `blocklet deploy ${file} --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret} --skip-hooks`;
+    let command = `blocklet deploy ${file} --endpoint ${endpoint} --access-key ${accessKey} --access-secret ${accessSecret}`;
 
     if (childBlockletParams.length === 1) {
       throw new Error(`Must provide both "--app-did" and "--mount-point" to deploy as a child blocklet`);
